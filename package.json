@@ -1,23 +1,28 @@
 {
-  "name": "lowfuel",
+  "name": "skillcheck",
   "version": "1.0.0",
-  "description": "Send discord ping when citadel runs low on fuel",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Rusherz/projects.git"
+    "url": "git+https://github.com/Rusherz/nodejs.git"
   },
   "author": "Rusherz",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Rusherz/projects/issues"
+    "url": "https://github.com/Rusherz/nodejs/issues"
   },
-  "homepage": "https://github.com/Rusherz/projects#readme",
+  "homepage": "https://github.com/Rusherz/nodejs#readme",
   "dependencies": {
-    "express": "^4.15.3",
+    "body-parser": "^1.17.2",
+    "cookie-session": "^2.0.0-beta.1",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "mysql": "^2.13.0",
+    "node-mysql": "^0.4.2",
     "request": "^2.81.0"
   }
 }
