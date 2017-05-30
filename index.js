@@ -188,7 +188,6 @@ app.get('/fuel', function (req, res) {
             url: 'https://crest-tq.eveonline.com/corporations/98051516/structures/'
         }
         MakeRequest(options, function (body) {
-            console.log(body);
             var citadels = JSON.parse(body)['items'];
             CitadelsOutput(citadels, function (data) {
                 res.render('fuel', {
@@ -339,6 +338,7 @@ function GetAccessCode(req, callback) {
     MakeRequest(options, function (body) {
         req.session.access_token = JSON.parse(body)['access_token'];
         req.session.refresh_token = JSON.parse(body)['refresh_token'];
+        console.log('refresh_token: ' + req.session.refresh_token);
         var options = {
             method: 'GET',
             headers: {
