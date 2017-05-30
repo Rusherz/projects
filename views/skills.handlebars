@@ -1,11 +1,42 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div data-role="main" class="ui-content">
-                <div class="bs-component" style="width: 100%; margin: 0px auto;">
-                    <div class="row" style="margin: 0px auto;">
-                        {{#each skill}}
-                            {{{this}}}
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+        <div data-role="main" class="ui-content">
+            <div class="bs-component" style="width: 100%; margin: 0px auto;">
+                <div class="row" style="margin: 0px auto;">
+                    <div id="fitlist" role="tablist" aria-multiselectable="true">
+                        {{#each fits}}
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="heading{{this.FitId}}">
+                                    <h4 class="mb-0" style="text-align: center">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#{{this.FitId}}" href="#{{this.FitId}}" aria-expanded="true" aria-controls="{{this.FitId}}">
+                                            {{this.FitName}}
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="{{this.FitId}}" class="collapse" role="tabpanel">
+                                    <div class="card-block">
+                                        {{#each item}}
+                                        <li class="list-group-item">
+                                            <a class="collapsed" data-toggle="collapse" data-parent="#{{this.ItemIndex}}" href="#{{this.ItemIndex}}" aria-expanded="true" aria-controls="{{this.ItemIndex}}">
+                                                <p style="width: 100%">Item: {{this.ItemName}}
+                                                    <span style="float: right" class="glyphicon {{this.HasSkill}}" aria-hidden="true"></span>
+                                                </p>
+                                            </a>
+                                            <div id="{{this.ItemIndex}}" class="collapse" role="tabpanel">
+                                                <ul>
+                                                {{#each this.Skills}}
+                                                <li class="list-group-item">Skill Name: {{this.SkillName}}</li>
+                                                <li class="list-group-item">Skill level needed: {{this.SkillLevel}}</li>
+                                                {{/each}}
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {{/each}}
                     </div>
                 </div>

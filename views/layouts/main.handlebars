@@ -4,38 +4,38 @@
 <head>
     <meta charset="utf-8">
     <title>Skill Check</title>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="/css/jquery.mobile-1.4.5.js"></script>
+    <script src="/js/jquery-3.1.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="/css/jquery.mobile-1.4.5.css">
     <link rel="stylesheet" href="/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-        <nav id="navHeader" class="navbar navbar-fixed-top navbar-default">
-            <div class="bs-component">
-                <div class="container-fluid">
-                    <div class="navbar-header" style="padding-right: 20px">
-                        <a class="navbar-brand" href="#">Fit Checker</a>
-                    </div>
+    <nav id="navHeader" class="navbar navbar-default">
+        <div class="bs-component">
+            <div class="container-fluid">
+                <div class="navbar-header" style="padding-right: 20px">
+                    <a class="navbar-brand-disable" href="#">Fit Checker</a>
+                </div>
 
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li><a href="/Skill">Home</a></li>
-                            {{#if admin}}
-                            <li><a href="/fits">Admin</a></li>
-                            {{/if}}
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="/SwitchChar">Switch Character</a></li>
-                        </ul>
-                    </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/fit/skill">Home</a></li>
+                        {{#if admin}}
+                        <li><a href="/fit">Admin</a></li>
+                        <li><a href="/fuel">Fuel</a></li>
+                        {{/if}}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
                 </div>
             </div>
-        </nav>
-        <div style="margin: 3% 0px 0px 0px;">
-            {{{body}}}
         </div>
+    </nav>
+    <div class="container">
+        {{{body}}}
+    </div>
 </body>
 
 </html>

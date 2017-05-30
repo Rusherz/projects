@@ -1,0 +1,292 @@
+[{
+    "FitName": "Arazu fit",
+    "item": [{
+        "ItemName": "1600mm Steel Plates II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 5
+        }]
+    }, {
+        "ItemName": "Reactive Armor Hardener",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 3
+        }]
+    }, {
+        "ItemName": "Energized Adaptive Nano Membrane II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 5
+        }]
+    }, {
+        "ItemName": "Energized Adaptive Nano Membrane II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 5
+        }]
+    }, {
+        "ItemName": "Shadow Serpentis Warp Scrambler",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Navigation",
+            "SkillLevel": 1
+        }, {
+            "SkillName": "Propulsion Jamming",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Shadow Serpentis Warp Disruptor",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Propulsion Jamming",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "10MN Afterburner II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Afterburner",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Remote Sensor Dampener II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Sensor Linking",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Remote Sensor Dampener II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Sensor Linking",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Remote Sensor Dampener II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Sensor Linking",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Covert Ops Cloaking Device II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Cloaking",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Medium Trimark Armor Pump II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": []
+    }, {
+        "ItemName": "Medium Trimark Armor Pump II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": []
+    }]
+}, {
+    "FitName": "-",
+    "item": [{
+        "ItemName": "Centum A-Type Medium Armor Repairer",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Mechanics",
+            "SkillLevel": 2
+        }, {
+            "SkillName": "Repair Systems",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Corpus X-Type Armor Kinetic Hardener",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 3
+        }]
+    }, {
+        "ItemName": "Corpus X-Type Armor Kinetic Hardener",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 3
+        }]
+    }, {
+        "ItemName": "Armor Thermal Hardener II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Hull Upgrades",
+            "SkillLevel": 5
+        }]
+    }, {
+        "ItemName": "Drone Damage Amplifier II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Drones",
+            "SkillLevel": 4
+        }, {
+            "SkillName": "Weapon Upgrades",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Drone Damage Amplifier II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Drones",
+            "SkillLevel": 4
+        }, {
+            "SkillName": "Weapon Upgrades",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Drone Damage Amplifier II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Drones",
+            "SkillLevel": 4
+        }, {
+            "SkillName": "Weapon Upgrades",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "10MN Afterburner II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Afterburner",
+            "SkillLevel": 4
+        }]
+    }, {
+        "ItemName": "Large Compact Pb-Acid Cap Battery",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Energy Grid Upgrades",
+            "SkillLevel": 2
+        }]
+    }, {
+        "ItemName": "Large Compact Pb-Acid Cap Battery",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Energy Grid Upgrades",
+            "SkillLevel": 2
+        }]
+    }, {
+        "ItemName": "Dread Guristas Medium Graviton Smartbomb",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Energy Pulse Weapons",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Sisters Expanded Probe Launcher",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Astrometrics",
+            "SkillLevel": 2
+        }]
+    }, {
+        "ItemName": "Dread Guristas Medium Graviton Smartbomb",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Energy Pulse Weapons",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Covert Ops Cloaking Device II /OFFLINE",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": []
+    }, {
+        "ItemName": "Drone Link Augmentor II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-ok",
+        "Skills": [{
+            "SkillName": "Drone Avionics",
+            "SkillLevel": 5
+        }]
+    }, {
+        "ItemName": "Medium Anti-Thermal Pump II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": []
+    }, {
+        "ItemName": "Medium Nanobot Accelerator II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": []
+    }, {
+        "ItemName": "Medium Nanobot Accelerator II",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": []
+    }, {
+        "ItemName": "Proteus Electronics - Emergent Locus Analyzer",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": [{
+            "SkillName": "Gallente Electronic Systems",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Proteus Defensive - Nanobot Injector",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": [{
+            "SkillName": "Gallente Defensive Systems",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Proteus Engineering - Augmented Capacitor Reservoir",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": [{
+            "SkillName": "Gallente Engineering Systems",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Proteus Offensive - Drone Synthesis Projector",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": [{
+            "SkillName": "Gallente Offensive Systems",
+            "SkillLevel": 1
+        }]
+    }, {
+        "ItemName": "Proteus Propulsion - Localized Injectors",
+        "ItemIndex": "0",
+        "HasSkill": "glyphicon-remove",
+        "Skills": [{
+            "SkillName": "Gallente Propulsion Systems",
+            "SkillLevel": 1
+        }]
+    }]
+}]

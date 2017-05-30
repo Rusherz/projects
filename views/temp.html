@@ -5,31 +5,36 @@
     <meta charset="utf-8">
     <title>Skill Check</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
-    <link rel="stylesheet" href="/bootstrap/bootstrap.css">
-    <script src="/js/jquery-3.1.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <script src="../public/js/jquery-3.1.1.min.js"></script>
+    <script src="../public/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../public/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="../public/css/style.css">
 </head>
 
 <body>
+    {{#each fit}}
     <div class="col-sm-6">
-        <div data-role="collapsible">
-            <h4>Arazu fit</h4>
-            <ul data-role="listview" style="color: green; padding: 0px; margin: 0px"><span style="color: green;">
-                <li data-role="collapsible" style="color: green; padding: 0px; margin: 0px">
-                    <h6>Item: Arazu</h6>
-                    <ul data-role="listview" style="color: green;">
-                        <li>Skill Name: Gallente Cruiser</li>
-                        <li>Skill level needed: 5</li>
-                        <li>Skill Name: Recon Ships</li>
-                        <li>Skill level needed: 1</li>
-                    </ul>
-                </li></span>
-            </ul>
+        <div class="card">
+            <div class="card-header" role="tab" id="heading{{this.FitName}}">
+                <h4 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#{{this.FitName}}" href="#{{this.FitName}}" aria-expanded="true" aria-controls="{{this.FitName}}">
+                        {{this.FitName}}
+                    </a>
+                </h4>
+            </div>
+            <div id="{{this.FitName}}" class="collapse" role="tabpanel">
+                <div class="card-block">
+                    <a href="#" class="list-group-item list-group-item-success">Item: {{this.Item}}
+                        {{#each this.skill}}
+                        <li class="list-group-item">Skill Name: {{this.SkillName}}</li>
+                        <li class="list-group-item">Skill level needed: {{this.SkillLevel}}</li>
+                        {{/each}}
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
+    {{/each}}
 </body>
 
 </html>

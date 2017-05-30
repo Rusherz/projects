@@ -1,0 +1,6 @@
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    background-color: transparent;
+    color: #FFFFFF;
+    text-decoration: underline;
+}
