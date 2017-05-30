@@ -82,7 +82,7 @@ app.get('/', function (req, res) {
 app.get('/callback', function (req, res) {
     if (req.session.refrresh_token == null)
         req.session.code = req.query.code;
-    res.redirect('/fit/skill/test');
+    res.redirect('/fit/skill');
 });
 
 app.get('/logout', function (req, res) {
