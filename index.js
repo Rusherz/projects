@@ -46,7 +46,8 @@ connection.connect(function (error) {
         Secret = 'LNZsrtvVaSWzvkXjss3YRiSrhv7AIMhvJAfO58Gf';
         url = 'https://login.eveonline.com/oauth/authorize/?response_type=code' +
             '&redirect_uri=http://auth.sudden-impact.online:3000/callback&client_id=377645b262b34c87a68bce8963ae2847' +
-            '&scope=esi-skills.read_skills.v1&state=uniquestate123';
+            '&scope=corporationStructuresRead%20esi-skills.read_skills.v1%20esi-corporations.read_structures.v1' + 
+            '&state=uniquestate123';
     }
 });
 
