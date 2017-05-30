@@ -188,6 +188,7 @@ app.get('/fuel', function (req, res) {
             url: 'https://crest-tq.eveonline.com/corporations/98051516/structures/'
         }
         MakeRequest(options, function (body) {
+            console.log(body);
             var citadels = JSON.parse(body)['items'];
             CitadelsOutput(citadels, function (data) {
                 res.render('fuel', {
