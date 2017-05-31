@@ -175,9 +175,12 @@ app.get('/fuel', function (req, res) {
             'Host': 'login.eveonline.com'
         },
         url: 'https://login.eveonline.com/oauth/token',
-        body: 'grant_type=refresh_token&refresh_token=msjSQ54BcqIVz3s1PATR_CTmnpxtJYX9g6Ilrz9Khuw1'
+        body: 'grant_type=refresh_token&refresh_token=qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0'
+        //msjSQ54BcqIVz3s1PATR_CTmnpxtJYX9g6Ilrz9Khuw1
+        //qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0
     }
     MakeRequest(options, function (body) {
+        console.log(body);
         var options = {
             method: 'GET',
             headers: {
