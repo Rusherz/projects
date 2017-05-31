@@ -17,6 +17,7 @@ var skillList;
 var ClientId;
 var Secret;
 var url;
+var fuelCode;
 
 connection.connect(function (error) {
     if (error) {
@@ -38,6 +39,7 @@ connection.connect(function (error) {
                     '&redirect_uri=http://127.0.0.1:3000/callback&client_id=e0b65052339e436c8a53444e7174ee59' +
                     '&scope=corporationStructuresRead%20esi-skills.read_skills.v1%20esi-corporations.read_structures.v1' +
                     '&state=uniquestate123';
+                fuelCode = 'msjSQ54BcqIVz3s1PATR_CTmnpxtJYX9g6Ilrz9Khuw1';
             }
         });
     } else {
@@ -48,6 +50,7 @@ connection.connect(function (error) {
             '&redirect_uri=http://auth.sudden-impact.online:3000/callback&client_id=377645b262b34c87a68bce8963ae2847' +
             '&scope=corporationStructuresRead%20esi-skills.read_skills.v1%20esi-corporations.read_structures.v1' + 
             '&state=uniquestate123';
+        fuelCode = 'qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0';
     }
 });
 
@@ -175,7 +178,7 @@ app.get('/fuel', function (req, res) {
             'Host': 'login.eveonline.com'
         },
         url: 'https://login.eveonline.com/oauth/token',
-        body: 'grant_type=refresh_token&refresh_token=qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0'
+        body: 'grant_type=refresh_token&refresh_token=' + fuelCode
         //msjSQ54BcqIVz3s1PATR_CTmnpxtJYX9g6Ilrz9Khuw1
         //qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0
     }
