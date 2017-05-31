@@ -22,9 +22,9 @@ var fuelCode;
 connection.connect(function (error) {
     if (error) {
         connection = mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: 'authserver',
+            host: 'auth.sudden-impact.online',
+            user: 'allianceserver',
+            password: '5LAP_ALLIANCE_SERVER_MYSQL',
             database: 'eve'
         });
         connection.connect(function (error) {
@@ -48,7 +48,7 @@ connection.connect(function (error) {
         Secret = 'LNZsrtvVaSWzvkXjss3YRiSrhv7AIMhvJAfO58Gf';
         url = 'https://login.eveonline.com/oauth/authorize/?response_type=code' +
             '&redirect_uri=http://auth.sudden-impact.online:3000/callback&client_id=377645b262b34c87a68bce8963ae2847' +
-            '&scope=corporationStructuresRead%20esi-skills.read_skills.v1%20esi-corporations.read_structures.v1' + 
+            '&scope=corporationStructuresRead%20esi-skills.read_skills.v1%20esi-corporations.read_structures.v1' +
             '&state=uniquestate123';
         fuelCode = 'qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0';
     }
@@ -67,6 +67,13 @@ app.set('view engine', 'handlebars');
 app.use(cookieSession({
     keys: ['password']
 }));
+app.listen(3000, (error) => {
+    if (error) {
+        console.error(error);
+        return;
+    }
+    console.info('server started on port 3000');
+});
 
 /*
  *
@@ -76,20 +83,59 @@ app.use(cookieSession({
  *
  */
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     req.session.admin = false;
     req.session.refresh_token = null;
     res.redirect(url);
 });
 
-app.get('/callback', function (req, res) {
+app.get('/callback', (req, res) => {
     if (req.session.refrresh_token == null)
         req.session.code = req.query.code;
     res.redirect('/fit/skill');
 });
 
-app.get('/logout', function (req, res) {
+app.get('/logout', (req, res) => {
     res.redirect('/');
+});
+
+app.get('/slack', (req, res) => {
+    var channels = [];
+    var options = {
+        method: 'GET',
+        headers: {
+            'Host': 'slack.com'
+        },
+        url: 'https://slack.com/api/channels.list?token=xoxs-7410466151-79782948197-190139684657-0b4e949838'
+    }
+    MakeRequest(options, (body) => {
+        JSON.parse(body)['channels'].forEach((channel, index, array) => {
+            channels.push({
+                "id": channel['id'],
+                "name": channel['name']
+            });
+            if (index == (array.length - 1)) {
+                var options = {
+                    method: 'GET',
+                    headers: {
+                        'Host': 'slack.com'
+                    },
+                    url: 'https://slack.com/api/groups.list?token=xoxs-7410466151-79782948197-190139684657-0b4e949838'
+                }
+                MakeRequest(options, (body) => {
+                    JSON.parse(body)['groups'].forEach((channel, index2, array2) => {
+                        channels.push({
+                            "id": channel['id'],
+                            "name": channel['name']
+                        });
+                        if (index2 == (array2.length - 1)) {
+                            res.send(channels);
+                        }
+                    });
+                });
+            }
+        });
+    });
 });
 
 /*
@@ -99,8 +145,8 @@ app.get('/logout', function (req, res) {
  *
  *
  */
-app.get('/fit', function (req, res) {
-    connection.query("SELECT * FROM fit;", function (error, results, fields) {
+app.get('/fit', (req, res) => {
+    connection.query("SELECT * FROM fit;", (error, results, fields) => {
         if (error) {
             console.error(error);
             return;
@@ -128,7 +174,7 @@ app.get('/fit', function (req, res) {
     });
 });
 
-app.post('/fit/editfitlist', function (req, res) {
+app.post('/fit/editfitlist', (req, res) => {
     if (req.method != 'POST')
         res.redirect('/');
     if (req.body.method == 'edit') {
@@ -138,8 +184,8 @@ app.post('/fit/editfitlist', function (req, res) {
     }
 });
 
-app.get('/fit/skill', function (req, res) {
-    GetAccessCode(req, function () {
+app.get('/fit/skill', (req, res) => {
+    GetAccessCode(req, () => {
         var options = {
             method: 'GET',
             headers: {
@@ -150,9 +196,9 @@ app.get('/fit/skill', function (req, res) {
             },
             url: 'https://esi.tech.ccp.is/latest/characters/' + req.session.charId + '/skills/'
         }
-        MakeRequest(options, function (body) {
+        MakeRequest(options, (body) => {
             skillList = JSON.parse(body)['skills'];
-            HtmlString(function (data) {
+            HtmlString((data) => {
                 res.render('skills', {
                     admin: req.session.admin,
                     fits: data
@@ -169,7 +215,7 @@ app.get('/fit/skill', function (req, res) {
  *
  *
  */
-app.get('/fuel', function (req, res) {
+app.get('/fuel', (req, res) => {
     var options = {
         method: 'POST',
         headers: {
@@ -182,7 +228,7 @@ app.get('/fuel', function (req, res) {
         //msjSQ54BcqIVz3s1PATR_CTmnpxtJYX9g6Ilrz9Khuw1
         //qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0
     }
-    MakeRequest(options, function (body) {
+    MakeRequest(options, (body) => {
         console.log(body);
         var options = {
             method: 'GET',
@@ -193,9 +239,9 @@ app.get('/fuel', function (req, res) {
             },
             url: 'https://crest-tq.eveonline.com/corporations/98051516/structures/'
         }
-        MakeRequest(options, function (body) {
+        MakeRequest(options, (body) => {
             var citadels = JSON.parse(body)['items'];
-            CitadelsOutput(citadels, function (data) {
+            CitadelsOutput(citadels, (data) => {
                 res.render('fuel', {
                     'admin': req.session.admin,
                     'citadel': data
@@ -205,13 +251,16 @@ app.get('/fuel', function (req, res) {
     });
 });
 
-app.listen(3000, function (error) {
-    if (error) {
-        console.error(error);
-        return;
-    }
-    console.info('server started on port 3000');
-});
+/*
+ *
+ *
+ * HUNTER APPLICATION
+ *
+ *
+ */
+// RORQ LOSSES IN FADE
+//https://zkillboard.com/api/losses/shipID/28352/regionID/10000046/orderDirection/asc/ 
+
 
 /*
  *
@@ -253,7 +302,7 @@ function DeleteFit(req, res) {
             DeleteQuery += " fitName = '" + fits[i].trim() + "' OR";
         }
     }
-    connection.query(DeleteQuery, function (error, results, fields) {
+    connection.query(DeleteQuery, (error, results, fields) => {
         if (error) {
             console.error(error);
             return;
@@ -277,16 +326,16 @@ function EditAddFit(req, res) {
         t3 = 0;
     }
     var lines = req.body.fitJson.split('\n');
-    parseFit(lines, t3, function (data) {
+    parseFit(lines, t3, (data) => {
         var UpdateQuery = "UPDATE fit SET fitJson = '" + JSON.stringify(data) + "' WHERE fitName = '" + data['FitName'] + "';";
-        connection.query(UpdateQuery, function (error, results, fields) {
+        connection.query(UpdateQuery, (error, results, fields) => {
             if (error) {
                 console.error(error);
                 return;
             }
             if (results['affectedRows'] == 0) {
                 var InsertQuery = "INSERT INTO fit VALUES('" + data['FitName'] + "', '" + JSON.stringify(data) + "', '" + t3 + "');";
-                connection.query(InsertQuery, function (error, results, fields) {
+                connection.query(InsertQuery, (error, results, fields) => {
                     if (error) {
                         console.error(error);
                         return;
@@ -341,7 +390,7 @@ function GetAccessCode(req, callback) {
         }
         console.info('refreshing token');
     }
-    MakeRequest(options, function (body) {
+    MakeRequest(options, (body) => {
         req.session.access_token = JSON.parse(body)['access_token'];
         req.session.refresh_token = JSON.parse(body)['refresh_token'];
         console.log('refresh_token: ' + req.session.refresh_token);
@@ -354,11 +403,11 @@ function GetAccessCode(req, callback) {
             },
             url: 'https://login.eveonline.com/oauth/verify'
         }
-        MakeRequest(options, function (body) {
+        MakeRequest(options, (body) => {
 
             req.session.charId = JSON.parse(body)['CharacterID'];
             var SQL = "SELECT * FROM admins WHERE CharId = '" + req.session.charId + "';";
-            connection.query(SQL, function (error, results, fields) {
+            connection.query(SQL, (error, results, fields) => {
                 if (error) {
                     console.error(error);
                     return;
@@ -381,7 +430,7 @@ function HtmlString(callback) {
     var ItemIndex = 0;
     var s = '';
     var html = new Array();
-    connection.query("SELECT fitJson FROM fit;", function (error, results, fields) {
+    connection.query("SELECT fitJson FROM fit;", (error, results, fields) => {
         if (error) {
             console.error(error);
             return;
@@ -398,7 +447,7 @@ function HtmlString(callback) {
                     s = 'SELECT * FROM Skills WHERE';
                     var emptyFirstSlot = false;
                     s += ' ItemName = "' + fit.ShipName + '" OR';
-                    fit.LowSlot.forEach(function (item, index2) {
+                    fit.LowSlot.forEach((item, index2) => {
                         if (item == '[Empty Low slot]') {
                             return;
                         }
@@ -408,31 +457,31 @@ function HtmlString(callback) {
                             s += ' OR ItemName = "' + item + '"';
                         }
                     });
-                    fit.MidSlot.forEach(function (item) {
+                    fit.MidSlot.forEach((item) => {
                         if (item == '[Empty Mid slot]') {
                             return;
                         }
                         s += ' OR ItemName = "' + item + '"';
                     });
-                    fit.HighSlot.forEach(function (item) {
+                    fit.HighSlot.forEach((item) => {
                         if (item == '[Empty High slot]') {
                             return;
                         }
                         s += ' OR ItemName = "' + item + '"';
                     });
                     if (fit.ShipName == 'Proteus' || fit.ShipName == 'Legion' || fit.ShipName == 'Loki' || fit.ShipName == 'Tengu') {
-                        fit.Mods.forEach(function (item) {
+                        fit.Mods.forEach((item) => {
                             s += ' OR ItemName = "' + item + '"';
                         });
                     }
-                    fit.RigSlot.forEach(function (item) {
+                    fit.RigSlot.forEach((item) => {
                         if (item == '[Empty Rig slot]') {
                             return;
                         }
                         s += ' OR ItemName = "' + item + '"';
                     });
                     s += ';';
-                    connection.query(s, function (error, results, fields) {
+                    connection.query(s, (error, results, fields) => {
                         if (error) {
                             console.error(error);
                             return;
@@ -444,54 +493,54 @@ function HtmlString(callback) {
 
                             ]
                         };
-                        SkillTest(results, fit.ShipName, false, function (data) {
+                        SkillTest(results, fit.ShipName, false, (data) => {
                             data.ItemIndex = ItemIndex;
                             ItemIndex++;
                             FitTemplate.item.push(data);
                         });
-                        fit.LowSlot.forEach(function (item) {
+                        fit.LowSlot.forEach((item) => {
                             if (item == '[Empty Low slot]') {
                                 return;
                             }
-                            SkillTest(results, item, false, function (data) {
+                            SkillTest(results, item, false, (data) => {
                                 data.ItemIndex = ItemIndex;
                                 ItemIndex++;
                                 FitTemplate.item.push(data);
                             });
                         });
-                        fit.MidSlot.forEach(function (item) {
+                        fit.MidSlot.forEach((item) => {
                             if (item == '[Empty Mid slot]') {
                                 return;
                             }
-                            SkillTest(results, item, false, function (data) {
+                            SkillTest(results, item, false, (data) => {
                                 data.ItemIndex = ItemIndex;
                                 ItemIndex++;
                                 FitTemplate.item.push(data);
                             });
                         });
-                        fit.HighSlot.forEach(function (item) {
+                        fit.HighSlot.forEach((item) => {
                             if (item == '[Empty High slot]') {
                                 return;
                             }
-                            SkillTest(results, item, false, function (data) {
+                            SkillTest(results, item, false, (data) => {
                                 data.ItemIndex = ItemIndex;
                                 ItemIndex++;
                                 FitTemplate.item.push(data);
                             });
                         });
-                        fit.RigSlot.forEach(function (item) {
+                        fit.RigSlot.forEach((item) => {
                             if (item == '[Empty Rig slot]') {
                                 return;
                             }
-                            SkillTest(results, item, true, function (data) {
+                            SkillTest(results, item, true, (data) => {
                                 data.ItemIndex = ItemIndex;
                                 ItemIndex++;
                                 FitTemplate.item.push(data);
                             });
                         });
                         if (fit.ShipName == 'Proteus' || fit.ShipName == 'Legion' || fit.ShipName == 'Loki' || fit.ShipName == 'Tengu') {
-                            fit.Mods.forEach(function (item) {
-                                SkillTest(results, item, false, function (data) {
+                            fit.Mods.forEach((item) => {
+                                SkillTest(results, item, false, (data) => {
                                     data.ItemIndex = ItemIndex;
                                     ItemIndex++;
                                     FitTemplate.item.push(data);
@@ -510,12 +559,12 @@ function HtmlString(callback) {
 }
 
 function MakeRequest(options, callback) {
-    request(options, function (error, response, body) {
+    request(options, (error, response, body) => {
         if (error) {
             console.error(error);
             return;
         }
-        callback(body);
+        callback(body, response);
     });
 }
 
@@ -607,12 +656,12 @@ function SkillTest(results, item, rigSlot, callback) {
             });
         });
         if (hasSkills == true && foundSkill == true) {
-            itemTemplate.HasSkill = 'glyphicon-ok';
+            itemTemplate.HasSkill = 'glyphicon-ok-success';
         } else {
-            itemTemplate.HasSkill = 'glyphicon-remove';
+            itemTemplate.HasSkill = 'glyphicon-remove-danger';
         }
     } else {
-        itemTemplate.HasSkill = 'glyphicon-ok';
+        itemTemplate.HasSkill = 'glyphicon-ok-success';
     }
     callback(itemTemplate);
 }

@@ -392,9 +392,18 @@ th {
 .glyphicon-ok:before {
     content: "\e013";
 }
+.glyphicon-ok-success:before {
+    content: "\e013";
+    color: green;
+}
 
 .glyphicon-remove:before {
     content: "\e014";
+}
+
+.glyphicon-remove-danger:before {
+    content: "\e014";
+    color: red;
 }
 
 .glyphicon-zoom-in:before {
