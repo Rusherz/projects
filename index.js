@@ -317,7 +317,6 @@ app.get('/GetSystemKills', (req, res) => {
         url: 'https://esi.tech.ccp.is/latest/universe/system_kills/'
     }
     MakeRequest(options, (body) => {
-        //res.send(JSON.parse(body));
         var data = JSON.parse(body);
         data.forEach((entry, index, array) => {
             System.findOne({
@@ -327,10 +326,16 @@ app.get('/GetSystemKills', (req, res) => {
                 SystemKill.findOne({
                     System: system._id
                 }, (error, sk) => {
+                    sysKill.System = system;
                     sysKill.npcKills = entry['npc_kills'];
-                    sysKill.npcDelta = (sk.npcKills - entry['npc_kills']);
+                    if (sk != null) {
+                        sysKill.npcDelta = (entry['npc_kills'] - sk.npcKills);
+                    }else{
+                        sysKill.npcDelta = entry['npc_kills'] ;
+                    }
                     sysKill.podKills = entry['pod_kills'];
                     sysKill.shipKills = (entry['ship_kills'] - entry['npc_kills']);
+                    console.log(sysKill);
                     var query = {
                         System: system._id
                     };
