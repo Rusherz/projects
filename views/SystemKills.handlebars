@@ -4,13 +4,32 @@
             <div data-role="main" class="ui-content">
                 <div class="bs-component" style="width: 100%; margin: 0px auto;">
                     <div class="row" style="margin: 0px auto;">
-                        <div class="col-sm-6">
-                            <h2>Kills</h2>
-                            <ul>
-                                {{#each Systems}}
-                                <li>{{this.system_id}} {{this.npc_kills}} {{this.pod_kills}} {{this.ship_kills}}</li>
-                                {{/each}}
-                            </ul>
+                        <div class="col-md-10 col-md-offset-1">
+                            <h2 style="text-align: center">Kills</h2>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>System</th>
+                                        <th>Player Kills</th>
+                                        <th>NPC Kills</th>
+                                        <th>NPC Delta</th>
+                                        <th>Mining System</th>
+                                        <th>Index</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each huntInfo}}
+                                    <tr>
+                                        <td>{{this.SystemName}}</td>
+                                        <td>{{this.PlayerDeath}}</td>
+                                        <td>{{this.NpcDeath}}</td>
+                                        <td>{{this.NpcDelta}}</td>
+                                        <td>{{this.MiningSystem}}</td>
+                                        <td>{{this.Index}}</td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

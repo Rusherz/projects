@@ -29,7 +29,7 @@ connection.connect(function (error) {
         });
         connection.connect(function (error) {
             if (error) {
-                console.error(error);
+                console.error('error: ' + error);
                 return;
             } else {
                 //DEV KEYS
@@ -69,10 +69,10 @@ app.use(cookieSession({
 }));
 app.listen(3000, (error) => {
     if (error) {
-        console.error(error);
+        console.error('error: ' + error);
         return;
     }
-    console.info('server started on port 3000');
+    console.info('info: server started on port 3000');
 });
 
 /*
@@ -148,7 +148,7 @@ app.get('/slack', (req, res) => {
 app.get('/fit', (req, res) => {
     connection.query("SELECT * FROM fit;", (error, results, fields) => {
         if (error) {
-            console.error(error);
+            console.error('error: ' + error);
             return;
         }
         if (results.length != 0) {
@@ -229,7 +229,6 @@ app.get('/fuel', (req, res) => {
         //qA_r6yU5GU7Hq1iv3iK_lOTGTjikWRf7Acm8G_KE7tL7LdLe0gRHiatepnLf_MgB0
     }
     MakeRequest(options, (body) => {
-        console.log(body);
         var options = {
             method: 'GET',
             headers: {
@@ -254,12 +253,24 @@ app.get('/fuel', (req, res) => {
 /*
  *
  *
- * HUNTER APPLICATION
+ * HUNTER BOT APPLICATION
  *
  *
  */
-// RORQ LOSSES IN FADE
-//https://zkillboard.com/api/losses/shipID/28352/regionID/10000046/orderDirection/asc/
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://auth.sudden-impact.online/eve');
+let db = mongoose.connection;
+let Models = require('./models/HunterModel');
+let Region = Models.Region;
+let System = Models.System;
+let SovLevel = Models.SovLevel;
+let SystemKill = Models.SystemKill;
+var fs = require('fs');
+
+// CHECK WE CONNECTED FINE
+db.once('open', () => console.info('info: Connected to mongo db'));
+db.on('error', (error) => console.error('error: ' + error));
+
 app.get('/GetSovLevel', (req, res) => {
     var options = {
         method: 'GET',
@@ -273,24 +284,23 @@ app.get('/GetSovLevel', (req, res) => {
     MakeRequest(options, (body) => {
         //res.send(JSON.parse(body));
         var data = JSON.parse(body);
-        var SQL= 'INSERT INTO SovLevel VALUES ';
         data.forEach((entry, index, array) => {
-            if(entry['vulnerability_occupancy_level'] != null){
-                SQL += "('" + entry['solar_system_id'] + "', " + (parseFloat(entry['vulnerability_occupancy_level']).toFixed(1)) + ")";
-            }else{
-                SQL += "('" + entry['solar_system_id'] + "', 0.0)";
+            if (entry['vulnerability_occupancy_level'] != null) {
+                System.findOne({
+                    SystemId: entry['solar_system_id']
+                }, (error, system) => {
+                    var sovLevel = new SovLevel();
+                    sovLevel.System = system._id;
+                    sovLevel.Index = (entry['vulnerability_occupancy_level']).toFixed(1);
+                    sovLevel.save((err) => {
+                        if (err) {
+                            console.error('error: ' + err);
+                        }
+                    });
+                });
             }
             if (index == (array.length - 1)) {
-                SQL += ';';
-                connection.query(SQL, (error, results) => {
-                    if (error) {
-                        console.error(error);
-                    }
-                    console.log('done');
-                    res.send(data);
-                });
-            } else {
-                SQL += ', ';
+                res.send('done');
             }
         });
     });
@@ -309,21 +319,83 @@ app.get('/GetSystemKills', (req, res) => {
     MakeRequest(options, (body) => {
         //res.send(JSON.parse(body));
         var data = JSON.parse(body);
-        var SQL = 'INSERT INTO SystemKills VALUES ';
         data.forEach((entry, index, array) => {
-            SQL += "(" + entry['npc_kills'] + ", " + entry['pod_kills'] + ", " + (entry['ship_kills'] - entry['npc_kills']) + ", '" + entry['system_id'] + "')";
+            System.findOne({
+                SystemId: entry['system_id']
+            }, (error, system) => {
+                var sysKill = {};
+                SystemKill.findOne({
+                    System: system._id
+                }, (error, sk) => {
+                    sysKill.npcKills = entry['npc_kills'];
+                    sysKill.npcDelta = (sk.npcKills - entry['npc_kills']);
+                    sysKill.podKills = entry['pod_kills'];
+                    sysKill.shipKills = (entry['ship_kills'] - entry['npc_kills']);
+                    var query = {
+                        System: system._id
+                    };
+                    SystemKill.update(query, sysKill, (err) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
+                })
+
+            });
             if (index == (array.length - 1)) {
-                SQL += ';';
-                connection.query(SQL, (error, results) => {
-                    if (error) {
-                        console.error(error);
-                    }
-                    console.log('done');
-                    res.send(SQL);
-                });
-            } else {
-                SQL += ', ';
+                res.send('done');
             }
+        });
+    });
+});
+
+app.get('/findkill', (req, res) => {
+    var options = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Host': 'zkillboard.com'
+        },
+        url: 'https://zkillboard.com/api/losses/shipID/23057,28352,40557/regionID/10000035/'
+    }
+    MakeRequest(options, (body) => {
+        var kills = JSON.parse(body);
+        var s = '';
+        var huntData = [];
+        kills.forEach((kill, index, array) => {
+            System.findOne({
+                SystemId: kill['solarSystemID']
+            }, (error, system) => {
+                SovLevel.findOne({
+                    System: system._id
+                }, (errorSov, sovLevel) => {
+                    SystemKill.findOne({
+                        System: system._id
+                    }, (err, sysKill) => {
+                        if (system != null && sysKill != null && sovLevel != null) {
+                            var hunt = {
+                                'SystemName': system.SystemName,
+                                'PlayerDeath': sysKill.shipKills,
+                                'NpcDeath': sysKill.npcKills,
+                                'NpcDelta': sysKill.npcDelta,
+                                'Index': sovLevel.Index
+                            }
+                            if (sovLevel.Index > 4 && sysKill.npcKills < 200) {
+                                hunt['MiningSystem'] = true;
+                            } else {
+                                hunt['MiningSystem'] = false;
+                            }
+                            huntData.push(hunt);
+                        }
+
+                        if (index == (array.length - 1)) {
+                            res.render('SystemKills', {
+                                'huntInfo': huntData
+                            });
+                        }
+                    });
+                });
+            });
         });
     });
 });
@@ -370,12 +442,12 @@ function DeleteFit(req, res) {
     }
     connection.query(DeleteQuery, (error, results, fields) => {
         if (error) {
-            console.error(error);
+            console.error('error:' + error);
             return;
         }
         for (var i = 0; i < 1000; i++) {
             if (i == 999) {
-                console.info('sending 200 status');
+                console.info('info: sending 200 status');
                 res.end(JSON.stringify({
                     response: '200'
                 }));
@@ -396,19 +468,19 @@ function EditAddFit(req, res) {
         var UpdateQuery = "UPDATE fit SET fitJson = '" + JSON.stringify(data) + "' WHERE fitName = '" + data['FitName'] + "';";
         connection.query(UpdateQuery, (error, results, fields) => {
             if (error) {
-                console.error(error);
+                console.error('error: ' + error);
                 return;
             }
             if (results['affectedRows'] == 0) {
                 var InsertQuery = "INSERT INTO fit VALUES('" + data['FitName'] + "', '" + JSON.stringify(data) + "', '" + t3 + "');";
                 connection.query(InsertQuery, (error, results, fields) => {
                     if (error) {
-                        console.error(error);
+                        console.error('error: ' + error);
                         return;
                     }
                     for (var i = 0; i < 1000; i++) {
                         if (i == 999) {
-                            console.info('sending 200 status');
+                            console.info('info: sending 200 status');
                             res.end(JSON.stringify({
                                 response: '200'
                             }));
@@ -418,7 +490,7 @@ function EditAddFit(req, res) {
             } else {
                 for (var i = 0; i < 1000; i++) {
                     if (i == 999) {
-                        console.info('sending 200 status');
+                        console.info('info: sending 200 status');
                         res.end(JSON.stringify({
                             response: '200'
                         }));
@@ -442,7 +514,7 @@ function GetAccessCode(req, callback) {
             url: 'https://login.eveonline.com/oauth/token',
             body: 'grant_type=authorization_code&code=' + code
         }
-        console.info('getting new token');
+        console.info('info: getting new token');
     } else {
         var options = {
             method: 'POST',
@@ -454,12 +526,12 @@ function GetAccessCode(req, callback) {
             url: 'https://login.eveonline.com/oauth/token',
             body: 'grant_type=refresh_token&refresh_token=' + req.session.refresh_token
         }
-        console.info('refreshing token');
+        console.info('info: refreshing token');
     }
     MakeRequest(options, (body) => {
         req.session.access_token = JSON.parse(body)['access_token'];
         req.session.refresh_token = JSON.parse(body)['refresh_token'];
-        console.log('refresh_token: ' + req.session.refresh_token);
+        console.info('info: refresh_token: ' + req.session.refresh_token);
         var options = {
             method: 'GET',
             headers: {
@@ -475,7 +547,7 @@ function GetAccessCode(req, callback) {
             var SQL = "SELECT * FROM admins WHERE CharId = '" + req.session.charId + "';";
             connection.query(SQL, (error, results, fields) => {
                 if (error) {
-                    console.error(error);
+                    console.error('error: ' + error);
                     return;
                 }
                 if (results.length != 0)
@@ -498,7 +570,7 @@ function HtmlString(callback) {
     var html = new Array();
     connection.query("SELECT fitJson FROM fit;", (error, results, fields) => {
         if (error) {
-            console.error(error);
+            console.error('error: ' + error);
             return;
         }
         if (results.length == 0) {
@@ -549,7 +621,7 @@ function HtmlString(callback) {
                     s += ';';
                     connection.query(s, (error, results, fields) => {
                         if (error) {
-                            console.error(error);
+                            console.error('error: ' + error);
                             return;
                         }
                         var FitTemplate = {
@@ -627,7 +699,7 @@ function HtmlString(callback) {
 function MakeRequest(options, callback) {
     request(options, (error, response, body) => {
         if (error) {
-            console.error(error);
+            console.error('error: ' + error);
             return;
         }
         callback(body, response);
