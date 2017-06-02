@@ -19,5 +19,6 @@ from hunterbot import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index, name='index'),
+    url(r'^getsovinfo', views.GetSovInfo, name='Get Sov Info'),
+    url(r'^getsysinfo', views.GetSysInfo, name='Get Sys Info'),
 ]
